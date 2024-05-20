@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Automated Medicinal Plant Recognition System</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to bottom, #4CAF50, #2E7D32);
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    header {
+      background-color: #007bff;
+      color: #fff;
+      padding: 10px 0;
+      text-align: center;
+      border-radius: 10px 10px 0 0;
+    }
+    h1 {
+      margin: 0;
+      font-size: 36px;
+    }
+    p {
+      font-size: 18px;
+      margin-bottom: 20px;
+    }
+    .upload-btn {
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      text-decoration: none;
+    }
+    .upload-btn:hover {
+      background-color: #0056b3;
+    }
+    #result {
+      margin-top: 20px;
+      display: none;
+    }
+
+   
+
+.container1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+input[type="file"] {
+    margin-bottom: 10px;
+}
+
+button.upload-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007BFF;
+    color: white;
+    cursor: pointer;
+}
+
+button.upload-btn:hover {
+    background-color: #0056b3;
+}
+
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Automated Medicinal Plant Recognition System</h1>
+    <p>Upload an image of a plant to identify its medicinal properties.</p>
+  </header>
+
+  <div class="container">
+    <div id="result">
+      <h2>Identification Result:</h2>
+      <p id="plantName"></p>
+    </div>
+    <h2>About MPRS</h2>
+    <p>The Medicinal Plant Recognition System (MPRS) is a cutting-edge system that utilizes advanced image processing and machine learning techniques to identify and classify medicinal plants based on visual characteristics. It aims to streamline plant identification processes and support various domains such as herbal medicine, biodiversity conservation, and pharmaceutical research.</p>
+    
+    <h2>Features</h2>
+    <ul>
+      <li>Accurate plant species identification</li>
+      <li>Robust image processing algorithms</li>
+      <li>User-friendly interface</li>
+      <li>Real-time plant identification</li>
+      <li>Support for diverse plant species</li>
+    </ul>
+    
+    <h2>Contact Us</h2>
+    <p>If you have any questions or feedback regarding MPRS, please contact us at <a href="mailto:contact@example.com">contact@example.com</a>.</p>
+    <br>
+    <br>
+    <div class="container1">
+      <form id="uploadForm" enctype="multipart/form-data">
+          <input type="file" id="fileInput" name="file" required>
+          <button type="submit" class="upload-btn">Upload</button>
+      </form>
+  </div>
+  </div>
+
+ 
+
+  <div id="result"></div>
+  
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    let classes=['Alovera','Amla','Amruta_Balli','Arali','Ashwagandha','Brahmi','Castor','Curry_Leaf','Doddapatre','Ekka','Mint','Nagadali','Neem','Nithyapushpa','Nooni','Pappaya','Pepper','Raktachandini','Tulasi','Wood_sorel'];
+    $(document).ready(function () {
+      $('#uploadForm').on('submit', function (event) {
+        event.preventDefault();
+        
+        var formData = new FormData(this);
+        
+        $.ajax({
+          type: 'POST',
+          url: '/',
+          data: formData,
+          processData: false,
+          contentType: false,
+          success: function (response) {
+            if (response.error) {
+              $('#plantName').text("Error: " + response.error);
+            } else {
+              $('#plantName').text("Identified Plant: " + classes[response.predicted_class]);
+            }
+            $('#result').show();
+          },
+          error: function () {
+            $('#plantName').text('Error occurred while processing the image.');
+            $('#result').show();
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>
